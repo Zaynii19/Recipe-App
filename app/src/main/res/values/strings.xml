@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Recipe App</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="home">Home</string>
+    <string name="favorite">Favorite</string>
+    <string name="category">Category</string>
+    <string name="what_would_you_like_to_eat">What would you like to eat</string>
+    <string name="our_papular_items">Our papular items</string>
+    <string name="search_meal">Search Meal</string>
+</resources>
