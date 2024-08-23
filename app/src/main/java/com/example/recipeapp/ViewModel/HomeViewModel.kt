@@ -5,8 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.recipeapp.CategoryMealApi.CategoryMeals
+import com.example.recipeapp.DB.MealDB
 import com.example.recipeapp.InlistMealCategoryApi.Category
 import com.example.recipeapp.InlistMealCategoryApi.MealsCategoryList
+import com.example.recipeapp.RandomMealAPI.Meal
 import com.example.recipeapp.RandomMealAPI.RandomMeals
 import com.example.recipeapp.Retrofit.RetrofitInstance
 import retrofit2.Call
@@ -14,10 +16,11 @@ import retrofit2.Callback
 import retrofit2.Response
 
 // Separate logic from main fragment or activity view
-class HomeViewModel: ViewModel() {
+class HomeViewModel(private val mealDatabase: MealDB): ViewModel() {
     private var randomRandomMealLiveData = MutableLiveData<com.example.recipeapp.RandomMealAPI.Meal>()
     private var categoryMealLiveData = MutableLiveData<List<com.example.recipeapp.CategoryMealApi.Meal>>()
     private var mealCategoriesLiveData = MutableLiveData<List<Category>>()
+    private var favMealLiveData = mealDatabase.mealDao().getAllMeal()
 
     fun getRandomMeal(){
         RetrofitInstance.api.getRandomMeal().enqueue(object : Callback<RandomMeals> {
@@ -84,4 +87,10 @@ class HomeViewModel: ViewModel() {
     fun observeMealCategoriesLiveData(): MutableLiveData<List<Category>> {
         return mealCategoriesLiveData
     }
+
+    fun observeFavMealLiveData(): LiveData<List<Meal>>{
+        return favMealLiveData
+    }
+
+
 }

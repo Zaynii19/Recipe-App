@@ -7,12 +7,16 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.example.recipeapp.DB.MealDB
 import com.example.recipeapp.Fragments.HomeFragment
+import com.example.recipeapp.RandomMealAPI.Meal
+import com.example.recipeapp.ViewModel.HomeViewModel
+import com.example.recipeapp.ViewModel.MealViewModelFactory
 import com.example.recipeapp.ViewModel.RandomMealActivityViewModel
 import com.example.recipeapp.databinding.ActivityRandomMealBinding
 
@@ -25,10 +29,12 @@ class RandomMealActivity : AppCompatActivity() {
     private var mealPic:String = ""
     private var mealCategory: String = ""
     private var mealArea: String = ""
+    private lateinit var mealMvvm: RandomMealActivityViewModel
     private var mealInstructions: String = ""
     private var youtubeLink: String = ""
+    private var mealToSave:Meal? = null
 
-    private val mealMvvm by viewModels<RandomMealActivityViewModel>()
+    //private val mealMvvm by viewModels<RandomMealActivityViewModel>() // use before adding room database
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +46,10 @@ class RandomMealActivity : AppCompatActivity() {
             insets
         }
 
+        val mealDatabase = MealDB.getInstance(this)
+        val viewModelFactory = MealViewModelFactory(mealDatabase)
+        mealMvvm = ViewModelProvider(this, viewModelFactory)[RandomMealActivityViewModel::class.java] // use after adding room database
+
         getMealInfo()
 
         loadingCase()
@@ -47,6 +57,7 @@ class RandomMealActivity : AppCompatActivity() {
         observerMealDetailsLiveData()
 
         onYoutubeBtnClick()
+        onFavBtnClick(mealMvvm)
 
     }
 
@@ -76,10 +87,12 @@ class RandomMealActivity : AppCompatActivity() {
             if (value != null) {
                 onResponseCase()
 
-                mealCategory = value.strCategory
-                mealArea = value.strArea
-                mealInstructions = value.strInstructions
-                youtubeLink = value.strYoutube
+                mealToSave = value
+
+                mealCategory = value.strCategory!!
+                mealArea = value.strArea!!
+                mealInstructions = value.strInstructions!!
+                youtubeLink = value.strYoutube!!
 
                 setInfoToView() // Update the UI after the data is set
             } else {
@@ -141,6 +154,13 @@ class RandomMealActivity : AppCompatActivity() {
         binding.youtubeBtn.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(youtubeLink))
             startActivity(intent)
+        }
+    }
+
+    private fun onFavBtnClick(mealMvvm: RandomMealActivityViewModel) {
+        binding.favBtn.setOnClickListener {
+             mealMvvm.insertMeal(mealToSave!!)
+            Toast.makeText(this@RandomMealActivity, "Meal Saved", Toast.LENGTH_SHORT).show()
         }
     }
 }
