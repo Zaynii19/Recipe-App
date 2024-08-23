@@ -1,5 +1,6 @@
 [versions]
 agp = "8.5.1"
+androidxNavigationSafeargsGradlePlugin = "2.7.7"
 converterGson = "2.11.0"
 glide = "4.16.0"
 kotlin = "1.9.0"
@@ -16,13 +17,18 @@ picasso = "2.71828"
 retrofit = "2.11.0"
 navigationFragmentKtx = "2.7.7"
 navigationUiKtx = "2.7.7"
+roomCompiler = "2.6.1"
 sdp_android = "1.0.6"
 ssp_android = "1.0.6"
 
 [libraries]
+androidx-androidx-navigation-safeargs-gradle-plugin = { module = "androidx.navigation.safeargs:androidx.navigation.safeargs.gradle.plugin", version.ref = "androidxNavigationSafeargsGradlePlugin" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycleViewmodelKtx" }
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomCompiler" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomCompiler" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomCompiler" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }

@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    //id("androidx.room")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -16,6 +18,10 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+
+    /*room {
+        schemaDirectory("$projectDir/schemas")
+    }*/
 
     buildTypes {
         release {
@@ -65,4 +71,13 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     // LiveData
     implementation(libs.androidx.lifecycle.livedata.ktx)
+
+    //Room
+    implementation(libs.androidx.room.runtime)
+    annotationProcessor(libs.androidx.room.compiler)
+    // optional - Kotlin Extensions and Coroutines support for Room
+    implementation(libs.androidx.room.ktx)
+    // To use Kotlin Symbol Processing (KSP)
+    ksp(libs.androidx.room.compiler)
+
 }

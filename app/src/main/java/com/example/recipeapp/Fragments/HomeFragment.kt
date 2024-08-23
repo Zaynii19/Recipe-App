@@ -154,7 +154,7 @@ class HomeFragment : Fragment() {
                 // Update the randomMeal object
                 this.randomMeal = meal
 
-                mealCategory = meal.strCategory
+                mealCategory = meal.strCategory!!
                 // initialize when meal category is get
                 homeMvvm.getCategoryMeal(mealCategory)
 
