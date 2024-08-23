@@ -4,7 +4,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -12,10 +11,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.example.recipeapp.Fragments.HomeFragment
-import com.example.recipeapp.RandomMealAPI.Meal
 import com.example.recipeapp.ViewModel.RandomMealActivityViewModel
 import com.example.recipeapp.databinding.ActivityRandomMealBinding
 
@@ -56,15 +53,15 @@ class RandomMealActivity : AppCompatActivity() {
     private fun getMealInfo() {
         val intent = intent
         mealId = intent.getStringExtra(HomeFragment.MEAL_ID) ?: run {
-            showErrorAndExit("Meal ID is missing")
+            showErrorAndExit("RandomMeal ID is missing")
             return
         }
         mealName = intent.getStringExtra(HomeFragment.MEAL_NAME) ?: run {
-            showErrorAndExit("Meal Name is missing")
+            showErrorAndExit("RandomMeal Name is missing")
             return
         }
         mealPic = intent.getStringExtra(HomeFragment.MEAL_PIC) ?: run {
-            showErrorAndExit("Meal Picture is missing")
+            showErrorAndExit("RandomMeal Picture is missing")
             return
         }
     }
@@ -113,7 +110,7 @@ class RandomMealActivity : AppCompatActivity() {
             binding.instructionText.text = mealInstructions
 
         } else {
-            showErrorAndExit("Meal data is incomplete")
+            showErrorAndExit("RandomMeal data is incomplete")
         }
     }
 

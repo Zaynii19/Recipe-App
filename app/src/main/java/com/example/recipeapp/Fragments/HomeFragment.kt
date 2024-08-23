@@ -16,11 +16,12 @@ import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.recipeapp.R
 import com.example.recipeapp.RandomMealAPI.Meal
 import com.example.recipeapp.RandomMealActivity
+import com.example.recipeapp.RcvAdapter.PopularRcvAdapter
 import com.example.recipeapp.ViewModel.HomeViewModel
 import com.example.recipeapp.databinding.FragmentHomeBinding
 
@@ -29,6 +30,14 @@ class HomeFragment : Fragment() {
     private val handler = Handler(Looper.getMainLooper())
     private val homeMvvm by viewModels<HomeViewModel>()
     private lateinit var randomMeal: Meal
+    private var mealCategory: String = ""
+    private lateinit var popularItemAdapter: PopularRcvAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        popularItemAdapter = PopularRcvAdapter()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,6 +60,19 @@ class HomeFragment : Fragment() {
         observerRandomMeal()
 
         onRandomMealClick()
+
+        homeMvvm.getCategoryMeal(mealCategory)
+        observerCategoryMeal()
+
+        setPopularRCV()
+        onPopularItemClick()
+    }
+
+    private fun setPopularRCV() {
+        binding.popularRcv.apply {
+            layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+            adapter = popularItemAdapter
+        }
     }
 
     private fun setSearchView() {
@@ -109,7 +131,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun observerRandomMeal() {
-        homeMvvm.observeLiveData().observe(viewLifecycleOwner) { meal ->
+        homeMvvm.observeRandomMealLiveData().observe(viewLifecycleOwner) { meal ->
             if (meal != null) {
                 Glide.with(this@HomeFragment)
                     .load(meal.strMealThumb)
@@ -117,6 +139,11 @@ class HomeFragment : Fragment() {
 
                 // Update the randomMeal object
                 this.randomMeal = meal
+
+                mealCategory = meal.strCategory
+                // initialize when meal category is get
+                homeMvvm.getCategoryMeal(mealCategory)
+
             } else {
                 Toast.makeText(requireContext(), "Failed to load meal", Toast.LENGTH_SHORT).show()
             }
@@ -130,6 +157,27 @@ class HomeFragment : Fragment() {
                 putExtra(MEAL_ID, randomMeal.idMeal)
                 putExtra(MEAL_NAME, randomMeal.strMeal)
                 putExtra(MEAL_PIC, randomMeal.strMealThumb)
+            }
+            startActivity(intent)
+        }
+    }
+
+    private fun observerCategoryMeal() {
+        homeMvvm.observeCategoryMealLiveData().observe(viewLifecycleOwner) { mealList ->
+            if (mealList != null) {
+                popularItemAdapter.setMeals(mealList = mealList as ArrayList<com.example.recipeapp.CategoryMealApi.Meal>)
+            } else {
+                Toast.makeText(requireContext(), "Failed to load meal", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun onPopularItemClick() {
+        popularItemAdapter.onItemClick = { meal: com.example.recipeapp.CategoryMealApi.Meal ->
+            val intent = Intent(activity, RandomMealActivity::class.java).apply {
+                putExtra(MEAL_ID, meal.idMeal)
+                putExtra(MEAL_NAME, meal.strMeal)
+                putExtra(MEAL_PIC, meal.strMealThumb)
             }
             startActivity(intent)
         }
