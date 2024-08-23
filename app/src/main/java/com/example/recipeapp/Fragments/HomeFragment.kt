@@ -16,11 +16,15 @@ import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.example.recipeapp.CategoriesMealActivity
+import com.example.recipeapp.InlistMealCategoryApi.Category
 import com.example.recipeapp.R
 import com.example.recipeapp.RandomMealAPI.Meal
 import com.example.recipeapp.RandomMealActivity
+import com.example.recipeapp.RcvAdapter.CategoryRcvAdapter
 import com.example.recipeapp.RcvAdapter.PopularRcvAdapter
 import com.example.recipeapp.ViewModel.HomeViewModel
 import com.example.recipeapp.databinding.FragmentHomeBinding
@@ -32,11 +36,13 @@ class HomeFragment : Fragment() {
     private lateinit var randomMeal: Meal
     private var mealCategory: String = ""
     private lateinit var popularItemAdapter: PopularRcvAdapter
+    private lateinit var categoryItemAdapter: CategoryRcvAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         popularItemAdapter = PopularRcvAdapter()
+        categoryItemAdapter = CategoryRcvAdapter()
     }
 
     override fun onCreateView(
@@ -55,23 +61,31 @@ class HomeFragment : Fragment() {
 
         // Fetch the random meal
         homeMvvm.getRandomMeal()
-
         // Observe the LiveData
         observerRandomMeal()
-
         onRandomMealClick()
 
-        homeMvvm.getCategoryMeal(mealCategory)
-        observerCategoryMeal()
-
         setPopularRCV()
+        observerCategoryMeal()
         onPopularItemClick()
+
+        setCategoryRCV()
+        homeMvvm.getCategoryList()
+        observerCategoryList()
+        onCategoryItemClick()
     }
 
     private fun setPopularRCV() {
         binding.popularRcv.apply {
             layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
             adapter = popularItemAdapter
+        }
+    }
+
+    private fun setCategoryRCV() {
+        binding.categoryRcv.apply {
+            layoutManager = GridLayoutManager(activity, 3, GridLayoutManager.VERTICAL, false)
+            adapter = categoryItemAdapter
         }
     }
 
@@ -145,7 +159,7 @@ class HomeFragment : Fragment() {
                 homeMvvm.getCategoryMeal(mealCategory)
 
             } else {
-                Toast.makeText(requireContext(), "Failed to load meal", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Failed to load Random meal", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -167,7 +181,7 @@ class HomeFragment : Fragment() {
             if (mealList != null) {
                 popularItemAdapter.setMeals(mealList = mealList as ArrayList<com.example.recipeapp.CategoryMealApi.Meal>)
             } else {
-                Toast.makeText(requireContext(), "Failed to load meal", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Failed to load Popular meal", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -183,9 +197,30 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private fun observerCategoryList() {
+        homeMvvm.observeMealCategoriesLiveData().observe(viewLifecycleOwner) { categoryList ->
+            if (categoryList != null) {
+                categoryItemAdapter.setCategory(categoryList = categoryList as ArrayList<Category>)
+            } else {
+                Toast.makeText(requireContext(), "Failed to load category", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun onCategoryItemClick() {
+        categoryItemAdapter.onItemClick = { mealCategory: Category ->
+            val intent = Intent(activity, CategoriesMealActivity::class.java).apply {
+                putExtra(CATEGORY_NAME, mealCategory.strCategory)
+            }
+            startActivity(intent)
+        }
+    }
+
+
     companion object {
         const val MEAL_ID = "com.example.recipeapp.Fragments.idMeal"
         const val MEAL_NAME = "com.example.recipeapp.Fragments.nameMeal"
         const val MEAL_PIC = "com.example.recipeapp.Fragments.thumbMeal"
+        const val CATEGORY_NAME = "com.example.recipeapp.Fragments.categoryName"
     }
 }

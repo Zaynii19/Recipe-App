@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.recipeapp.CategoryMealApi.CategoryMeals
+import com.example.recipeapp.InlistMealCategoryApi.Category
+import com.example.recipeapp.InlistMealCategoryApi.MealsCategoryList
 import com.example.recipeapp.RandomMealAPI.RandomMeals
 import com.example.recipeapp.Retrofit.RetrofitInstance
 import retrofit2.Call
@@ -15,6 +17,7 @@ import retrofit2.Response
 class HomeViewModel: ViewModel() {
     private var randomRandomMealLiveData = MutableLiveData<com.example.recipeapp.RandomMealAPI.Meal>()
     private var categoryMealLiveData = MutableLiveData<List<com.example.recipeapp.CategoryMealApi.Meal>>()
+    private var mealCategoriesLiveData = MutableLiveData<List<Category>>()
 
     fun getRandomMeal(){
         RetrofitInstance.api.getRandomMeal().enqueue(object : Callback<RandomMeals> {
@@ -58,5 +61,27 @@ class HomeViewModel: ViewModel() {
     //use from home fragment to listen live data
     fun observeCategoryMealLiveData(): MutableLiveData<List<com.example.recipeapp.CategoryMealApi.Meal>> {
         return categoryMealLiveData
+    }
+
+    fun getCategoryList() {
+        RetrofitInstance.api.getCategories().enqueue(object : Callback<MealsCategoryList> {
+            override fun onResponse(call: Call<MealsCategoryList>, response: Response<MealsCategoryList>) {
+                if (response.body() != null){
+                    mealCategoriesLiveData.value = response.body()!!.categories
+                } else{
+                    return
+                }
+            }
+
+            override fun onFailure(call: Call<MealsCategoryList>, e: Throwable) {
+                Log.d("HomeFragment", "onFailure: ${e.message}")
+            }
+
+        })
+    }
+
+    //use from home fragment to listen live data
+    fun observeMealCategoriesLiveData(): MutableLiveData<List<Category>> {
+        return mealCategoriesLiveData
     }
 }

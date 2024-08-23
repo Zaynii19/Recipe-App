@@ -89,7 +89,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView3"
-            android:background="@color/white"
+            android:backgroundTint="@color/white"
             app:cardCornerRadius="@dimen/_10sdp"
             app:cardElevation="10dp">
 
@@ -148,15 +148,15 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView5"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:background="@color/white"
+            android:backgroundTint="@color/white"
             app:cardCornerRadius="5dp"
             app:cardElevation="10dp">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/categoryRcv"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_200sdp" />
+                android:layout_height="@dimen/_200sdp"
+                tools:listitem="@layout/category_items"/>
 
         </androidx.cardview.widget.CardView>
 

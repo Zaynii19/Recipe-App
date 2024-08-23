@@ -1,6 +1,7 @@
 package com.example.recipeapp.Retrofit
 
 import com.example.recipeapp.CategoryMealApi.CategoryMeals
+import com.example.recipeapp.InlistMealCategoryApi.MealsCategoryList
 import com.example.recipeapp.RandomMealAPI.RandomMeals
 import retrofit2.Call
 import retrofit2.http.GET
@@ -15,4 +16,7 @@ interface MealApiInterface {
 
     @GET("filter.php?")
     fun getMealFilterByCategory(@Query("c") category:String): Call<CategoryMeals>
+
+    @GET("categories.php")
+    fun getCategories(): Call<MealsCategoryList>
 }
