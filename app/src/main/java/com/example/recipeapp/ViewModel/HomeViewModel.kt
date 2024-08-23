@@ -6,8 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.recipeapp.CategoryMealApi.CategoryMeals
 import com.example.recipeapp.DB.MealDB
-import com.example.recipeapp.InlistMealCategoryApi.Category
-import com.example.recipeapp.InlistMealCategoryApi.MealsCategoryList
+import com.example.recipeapp.MealCategoryListApi.Category
+import com.example.recipeapp.MealCategoryListApi.MealsCategoryList
 import com.example.recipeapp.RandomMealAPI.Meal
 import com.example.recipeapp.RandomMealAPI.RandomMeals
 import com.example.recipeapp.Retrofit.RetrofitInstance

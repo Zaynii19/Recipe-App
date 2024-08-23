@@ -4,8 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.recipeapp.CategoryMealApi.Meal
-import com.example.recipeapp.InlistMealCategoryApi.Category
+import com.example.recipeapp.MealCategoryListApi.Category
 import com.example.recipeapp.databinding.CategoryItemsBinding
 
 class CategoryRcvAdapter(): RecyclerView.Adapter<CategoryRcvAdapter.CategoryViewHolder>() {

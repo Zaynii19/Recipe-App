@@ -43,7 +43,7 @@ class FavMealsRcvAdapter(): RecyclerView.Adapter<FavMealsRcvAdapter.FavMealsView
         holder.binding.mealName.text = meal.strMeal
 
         holder.itemView.setOnClickListener{
-            onItemClick.invoke(mealList[position])
+            onItemClick.invoke(meal)
         }
     }
 }

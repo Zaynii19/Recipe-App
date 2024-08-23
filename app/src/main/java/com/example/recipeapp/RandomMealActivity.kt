@@ -15,7 +15,6 @@ import com.bumptech.glide.Glide
 import com.example.recipeapp.DB.MealDB
 import com.example.recipeapp.Fragments.HomeFragment
 import com.example.recipeapp.RandomMealAPI.Meal
-import com.example.recipeapp.ViewModel.HomeViewModel
 import com.example.recipeapp.ViewModel.MealViewModelFactory
 import com.example.recipeapp.ViewModel.RandomMealActivityViewModel
 import com.example.recipeapp.databinding.ActivityRandomMealBinding

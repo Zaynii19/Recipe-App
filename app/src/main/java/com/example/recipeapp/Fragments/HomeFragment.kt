@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,14 +14,11 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.recipeapp.CategoriesMealActivity
-import com.example.recipeapp.DB.MealDB
-import com.example.recipeapp.InlistMealCategoryApi.Category
+import com.example.recipeapp.MealCategoryListApi.Category
 import com.example.recipeapp.MainActivity
 import com.example.recipeapp.R
 import com.example.recipeapp.RandomMealAPI.Meal
@@ -30,8 +26,6 @@ import com.example.recipeapp.RandomMealActivity
 import com.example.recipeapp.RcvAdapter.CategoryRcvAdapter
 import com.example.recipeapp.RcvAdapter.PopularRcvAdapter
 import com.example.recipeapp.ViewModel.HomeViewModel
-import com.example.recipeapp.ViewModel.MealViewModelFactory
-import com.example.recipeapp.ViewModel.RandomMealActivityViewModel
 import com.example.recipeapp.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {

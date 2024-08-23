@@ -1,30 +1,23 @@
 package com.example.recipeapp.Fragments
 
-import android.graphics.Color
+import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ImageView
 import android.widget.Toast
-import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.recipeapp.InlistMealCategoryApi.Category
+import com.example.recipeapp.Fragments.HomeFragment.Companion.MEAL_ID
+import com.example.recipeapp.Fragments.HomeFragment.Companion.MEAL_NAME
+import com.example.recipeapp.Fragments.HomeFragment.Companion.MEAL_PIC
 import com.example.recipeapp.MainActivity
-import com.example.recipeapp.R
 import com.example.recipeapp.RandomMealAPI.Meal
+import com.example.recipeapp.RandomMealActivity
 import com.example.recipeapp.RcvAdapter.FavMealsRcvAdapter
-import com.example.recipeapp.RcvAdapter.PopularRcvAdapter
 import com.example.recipeapp.ViewModel.HomeViewModel
 import com.example.recipeapp.databinding.FragmentFavBinding
-import com.example.recipeapp.databinding.FragmentHomeBinding
 
 class FavFragment : Fragment() {
     private lateinit var binding: FragmentFavBinding
@@ -51,11 +44,12 @@ class FavFragment : Fragment() {
 
         setRCV()
         observeFavMeals()
+        onFavMealClick()
     }
 
     private fun setRCV() {
         binding.favRcv.apply {
-            layoutManager = GridLayoutManager(activity, 3, GridLayoutManager.VERTICAL, false)
+            layoutManager = GridLayoutManager(activity, 2, GridLayoutManager.VERTICAL, false)
             adapter = favItemAdapter
         }
     }
@@ -68,5 +62,16 @@ class FavFragment : Fragment() {
                 Toast.makeText(requireContext(), "Failed to load favorite meals", Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    private fun onFavMealClick() {
+        favItemAdapter.onItemClick = { meal: Meal ->
+            val intent = Intent(activity, RandomMealActivity::class.java).apply {
+                putExtra(MEAL_ID, meal.idMeal)
+                putExtra(MEAL_NAME, meal.strMeal)
+                putExtra(MEAL_PIC, meal.strMealThumb)
+            }
+            startActivity(intent)
+        }
     }
 }

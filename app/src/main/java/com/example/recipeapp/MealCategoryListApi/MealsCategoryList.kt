@@ -1,4 +1,4 @@
-package com.example.recipeapp.InlistMealCategoryApi
+package com.example.recipeapp.MealCategoryListApi
 
 data class MealsCategoryList(
     val categories: List<Category>
