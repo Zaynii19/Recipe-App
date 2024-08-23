@@ -97,7 +97,6 @@
                 android:id="@+id/randomMealPic"
                 android:layout_width="@dimen/_250sdp"
                 android:layout_height="@dimen/_150sdp"
-                android:src="@drawable/home"
                 android:scaleType="centerCrop"/>
         </androidx.cardview.widget.CardView>
 
