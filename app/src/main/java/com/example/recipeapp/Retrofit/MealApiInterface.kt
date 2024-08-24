@@ -12,7 +12,7 @@ interface MealApiInterface {
     @GET("random.php")
     fun getRandomMeal(): Call<RandomMeals>
 
-    @GET("lookup.php?")
+    @GET("lookup.php?")   // ? is only for when one query not use ? when more than one queries
     fun getMealDetailsById(@Query("i") id:String) : Call<RandomMeals>
 
     @GET("filter.php?")

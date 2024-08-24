@@ -25,13 +25,21 @@ class HomeViewModel(private val mealDatabase: MealDB): ViewModel() {
     private var mealCategoriesLiveData = MutableLiveData<List<Category>>()
     private var favMealLiveData = mealDatabase.mealDao().getAllMeal()
     private var searchMealLiveData = MutableLiveData<List<com.example.recipeapp.MealSearchByNameApi.Meal>>()
+    private var saveStateRandomMeal: Meal? = null
+
 
     fun getRandomMeal(){
+        // not update and get random meal if it already in list
+        saveStateRandomMeal?.let { randomMeal ->
+            randomRandomMealLiveData.postValue(randomMeal)
+            return
+        }
         RetrofitInstance.api.getRandomMeal().enqueue(object : Callback<RandomMeals> {
             override fun onResponse(call: Call<RandomMeals>, response: Response<RandomMeals>) {
                 if (response.body() != null){
                     val randomMeal: Meal = response.body()!!.meals[0]
                     randomRandomMealLiveData.value = randomMeal
+                    saveStateRandomMeal = randomMeal
                 }else{
                     return
                 }
