@@ -9,6 +9,7 @@ import com.example.recipeapp.CategoryMealApi.CategoryMeals
 import com.example.recipeapp.DB.MealDB
 import com.example.recipeapp.MealCategoryListApi.Category
 import com.example.recipeapp.MealCategoryListApi.MealsCategoryList
+import com.example.recipeapp.MealSearchByNameApi.MealByName
 import com.example.recipeapp.RandomMealAPI.Meal
 import com.example.recipeapp.RandomMealAPI.RandomMeals
 import com.example.recipeapp.Retrofit.RetrofitInstance
@@ -19,16 +20,17 @@ import retrofit2.Response
 
 // Separate logic from main fragment or activity view
 class HomeViewModel(private val mealDatabase: MealDB): ViewModel() {
-    private var randomRandomMealLiveData = MutableLiveData<com.example.recipeapp.RandomMealAPI.Meal>()
+    private var randomRandomMealLiveData = MutableLiveData<Meal>()
     private var categoryMealLiveData = MutableLiveData<List<com.example.recipeapp.CategoryMealApi.Meal>>()
     private var mealCategoriesLiveData = MutableLiveData<List<Category>>()
     private var favMealLiveData = mealDatabase.mealDao().getAllMeal()
+    private var searchMealLiveData = MutableLiveData<List<com.example.recipeapp.MealSearchByNameApi.Meal>>()
 
     fun getRandomMeal(){
         RetrofitInstance.api.getRandomMeal().enqueue(object : Callback<RandomMeals> {
             override fun onResponse(call: Call<RandomMeals>, response: Response<RandomMeals>) {
                 if (response.body() != null){
-                    val randomMeal: com.example.recipeapp.RandomMealAPI.Meal = response.body()!!.meals[0]
+                    val randomMeal: Meal = response.body()!!.meals[0]
                     randomRandomMealLiveData.value = randomMeal
                 }else{
                     return
@@ -92,6 +94,27 @@ class HomeViewModel(private val mealDatabase: MealDB): ViewModel() {
 
     fun observeFavMealLiveData(): LiveData<List<Meal>>{
         return favMealLiveData
+    }
+
+    fun getSearchMeal(category: String) {
+        RetrofitInstance.api.searchMeal(category).enqueue(object : Callback<MealByName> {
+            override fun onResponse(call: Call<MealByName>, response: Response<MealByName>) {
+                if (response.body() != null){
+                    searchMealLiveData.value = response.body()!!.meals
+                } else{
+                    return
+                }
+            }
+
+            override fun onFailure(call: Call<MealByName>, e: Throwable) {
+                Log.d("HomeFragment", "onFailure: ${e.message}")
+            }
+
+        })
+    }
+
+    fun observeMealSearchLiveData(): MutableLiveData<List<com.example.recipeapp.MealSearchByNameApi.Meal>> {
+        return searchMealLiveData
     }
 
     // delete meal from database

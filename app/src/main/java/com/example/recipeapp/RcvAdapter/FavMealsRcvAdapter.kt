@@ -10,7 +10,6 @@ import com.example.recipeapp.RandomMealAPI.Meal
 import com.example.recipeapp.databinding.CategoriesMealItemsBinding
 
 class FavMealsRcvAdapter(): RecyclerView.Adapter<FavMealsRcvAdapter.FavMealsViewHolder>()  {
-    private var mealList = ArrayList<Meal>()
     lateinit var onItemClick: ((Meal) -> (Unit))
 
     private val diffUtil = object : DiffUtil.ItemCallback<Meal>(){  //Improve performance

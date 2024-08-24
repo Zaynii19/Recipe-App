@@ -67,6 +67,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/searchRcv"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbarBackground" />
+
         <TextView
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
@@ -142,6 +152,7 @@
             app:layout_constraintTop_toBottomOf="@+id/popularRcv" />
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/categoryCardView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_10sdp"

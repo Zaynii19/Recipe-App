@@ -2,6 +2,7 @@ package com.example.recipeapp.Retrofit
 
 import com.example.recipeapp.CategoryMealApi.CategoryMeals
 import com.example.recipeapp.MealCategoryListApi.MealsCategoryList
+import com.example.recipeapp.MealSearchByNameApi.MealByName
 import com.example.recipeapp.RandomMealAPI.RandomMeals
 import retrofit2.Call
 import retrofit2.http.GET
@@ -19,4 +20,7 @@ interface MealApiInterface {
 
     @GET("categories.php")
     fun getCategories(): Call<MealsCategoryList>
+
+    @GET("search.php")
+    fun searchMeal(@Query("s") searchQuery: String): Call<MealByName>
 }

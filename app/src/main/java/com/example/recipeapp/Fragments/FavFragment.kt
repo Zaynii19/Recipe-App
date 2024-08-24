@@ -76,7 +76,7 @@ class FavFragment : Fragment() {
 
     private fun setRCV() {
         binding.favRcv.apply {
-            layoutManager = GridLayoutManager(activity, 2, GridLayoutManager.VERTICAL, false)
+            layoutManager = GridLayoutManager(activity, 2, GridLayoutManager.VERTICAL, true)
             adapter = favItemAdapter
         }
     }

@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -25,6 +26,7 @@ import com.example.recipeapp.RandomMealAPI.Meal
 import com.example.recipeapp.RandomMealActivity
 import com.example.recipeapp.RcvAdapter.CategoryRcvAdapter
 import com.example.recipeapp.RcvAdapter.PopularRcvAdapter
+import com.example.recipeapp.RcvAdapter.SearchRcvAdapter
 import com.example.recipeapp.ViewModel.HomeViewModel
 import com.example.recipeapp.databinding.FragmentHomeBinding
 
@@ -37,6 +39,8 @@ class HomeFragment : Fragment() {
     private var mealCategory: String = ""
     private lateinit var popularItemAdapter: PopularRcvAdapter
     private lateinit var categoryItemAdapter: CategoryRcvAdapter
+    private lateinit var searchItemAdapter: SearchRcvAdapter
+    private var isSearch: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +49,7 @@ class HomeFragment : Fragment() {
 
         popularItemAdapter = PopularRcvAdapter()
         categoryItemAdapter = CategoryRcvAdapter()
+        searchItemAdapter = SearchRcvAdapter()
     }
 
     override fun onCreateView(
@@ -75,6 +80,34 @@ class HomeFragment : Fragment() {
         homeMvvm.getCategoryList()
         observerCategoryList()
         onCategoryItemClick()
+
+        setSearchRCV()
+    }
+
+    private fun setSearchBtn() {
+        binding.searchButton.setOnClickListener {
+            searchItemAdapter.clearList()
+            toggleSearchView()
+            if (isSearch){
+                isSearch = false
+                binding.searchRcv.visibility = View.INVISIBLE
+                binding.textView3.visibility = View.VISIBLE
+                binding.imageCardView.visibility = View.VISIBLE
+                binding.textView4.visibility = View.VISIBLE
+                binding.popularRcv.visibility = View.VISIBLE
+                binding.textView5.visibility = View.VISIBLE
+                binding.categoryCardView.visibility = View.VISIBLE
+            }else {
+                isSearch = true
+                binding.searchRcv.visibility = View.VISIBLE
+                binding.textView3.visibility = View.INVISIBLE
+                binding.imageCardView.visibility = View.INVISIBLE
+                binding.textView4.visibility = View.INVISIBLE
+                binding.popularRcv.visibility = View.INVISIBLE
+                binding.textView5.visibility = View.INVISIBLE
+                binding.categoryCardView.visibility = View.INVISIBLE
+            }
+        }
     }
 
     private fun setPopularRCV() {
@@ -88,6 +121,13 @@ class HomeFragment : Fragment() {
         binding.categoryRcv.apply {
             layoutManager = GridLayoutManager(activity, 3, GridLayoutManager.VERTICAL, false)
             adapter = categoryItemAdapter
+        }
+    }
+
+    private fun setSearchRCV() {
+        binding.searchRcv.apply {
+            layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, true)
+            adapter = searchItemAdapter
         }
     }
 
@@ -117,13 +157,14 @@ class HomeFragment : Fragment() {
         })
 
         // Handle Search Button click
-        binding.searchButton.setOnClickListener {
-            toggleSearchView()
-        }
+        setSearchBtn()
+
     }
 
-    private fun performSearch(orEmpty: String) {
-
+    private fun performSearch(mealName: String) {
+        homeMvvm.getSearchMeal(mealName)
+        observerSearchList()
+        onSearchMealClick()
     }
 
     private fun toggleSearchView() {
@@ -214,6 +255,26 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private fun observerSearchList() {
+        homeMvvm.observeMealSearchLiveData().observe(viewLifecycleOwner) { searchList ->
+            if (searchList != null) {
+                searchItemAdapter.setCategory(searchList = searchList as ArrayList<com.example.recipeapp.MealSearchByNameApi.Meal>)
+            } else {
+                Toast.makeText(requireContext(), "Failed to load category", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun onSearchMealClick() {
+        searchItemAdapter.onItemClick = { meal: com.example.recipeapp.MealSearchByNameApi.Meal ->
+            val intent = Intent(activity, RandomMealActivity::class.java).apply {
+                putExtra(MEAL_ID, meal.idMeal)
+                putExtra(MEAL_NAME, meal.strMeal)
+                putExtra(MEAL_PIC, meal.strMealThumb)
+            }
+            startActivity(intent)
+        }
+    }
 
     companion object {
         const val MEAL_ID = "com.example.recipeapp.Fragments.idMeal"
