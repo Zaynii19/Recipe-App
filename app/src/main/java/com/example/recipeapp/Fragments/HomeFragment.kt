@@ -169,12 +169,8 @@ class HomeFragment : Fragment() {
 
     private fun onRandomMealClick() {
         binding.randomMealPic.setOnClickListener {
-            val intent = Intent(activity, RandomMealActivity::class.java).apply {
-                putExtra(MEAL_ID, randomMeal.idMeal)
-                putExtra(MEAL_NAME, randomMeal.strMeal)
-                putExtra(MEAL_PIC, randomMeal.strMealThumb)
-            }
-            startActivity(intent)
+            val mealBottomSheetFragment = BottomSheetFragment()
+            mealBottomSheetFragment.show(childFragmentManager, "Meal Info Sheet")
         }
     }
 
