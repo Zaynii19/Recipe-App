@@ -47,11 +47,4 @@ class RandomMealActivityViewModel(private  val mealDatabase: MealDB): ViewModel(
          }
     }
 
-    // delete meal from database
-    fun deleteMeal(meal: Meal) {
-        viewModelScope.launch {
-            mealDatabase.mealDao().delete(meal)
-        }
-    }
-
 }

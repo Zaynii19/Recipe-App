@@ -23,5 +23,11 @@
         android:text="@string/chicken"
         android:layout_gravity="bottom|center"
         android:textColor="@color/black"
-        android:layout_marginBottom="@dimen/_5ssp"/>
+        android:layout_marginBottom="@dimen/_5ssp"
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"/>
 </androidx.cardview.widget.CardView>

@@ -28,6 +28,7 @@ class CategoryMealsRcvAdapter(): RecyclerView.Adapter<CategoryMealsRcvAdapter.Ca
             .into(holder.binding.mealPic)
 
         holder.binding.mealName.text = mealList[position].strMeal
+        holder.binding.mealName.isSelected = true
 
         holder.itemView.setOnClickListener{
             onItemClick.invoke(mealList[position])

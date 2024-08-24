@@ -41,6 +41,7 @@ class FavMealsRcvAdapter(): RecyclerView.Adapter<FavMealsRcvAdapter.FavMealsView
             .load(meal.strMealThumb)
             .into(holder.binding.mealPic)
         holder.binding.mealName.text = meal.strMeal
+        holder.binding.mealName.isSelected = true
 
         holder.itemView.setOnClickListener{
             onItemClick.invoke(meal)
